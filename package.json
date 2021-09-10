@@ -15,6 +15,7 @@
   },
   "scripts": {
     "start": "concurrently \"craco start\" \"cd server && npm run start\"",
+    "start-client": "craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject"

@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { nanoid } from 'nanoid'
 import quotesOriginal from './quotesOriginal.json'
+import quotes from './quotes.json'
 import fs from 'fs/promises'
 import path from 'path'
 const quotesFilePath = path.resolve(__dirname, './quotes.json')
