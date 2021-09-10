@@ -33,74 +33,27 @@ export const getTopQuotes = async (
   }
 }
 
-type GetQuotes = {
+type SearchQuotes = {
   Querystring: {
-    page?: string
-    cursor?: string
+    query?: string
   }
 }
 
-const getQuotesByPage = async (page: number, limit: number) => {
-  const offset = page * limit
-  const endIndex = offset + limit
-  const quotesData = await readQuotes()
-  const quotes = quotesData.quotes.slice(offset, endIndex)
-  return {
-    quotes,
-    hasMore: endIndex < quotesData.quotes.length - 1,
-  }
-}
+export const searchQuotes = async (request: FastifyRequest<SearchQuotes>, reply: FastifyReply) => {
+  await sleep()
+  const quotesData = await readQuotes() as QuotesData
+  const query = request.query.query?.toLowerCase()
 
-const getQuotesByCursor = async (cursor: number, limit: number) => {
-  const endIndex = cursor + limit
-  const quotesData = await readQuotes()
-  const quotes = quotesData.quotes.slice(cursor, endIndex)
+  if (!query) {
+    return {
+      quotes: quotesData.quotes.slice(0, 5),
+    } 
+  }
 
   return {
-    quotes,
-    nextCursor: endIndex < quotesData.quotes.length - 1 ? endIndex + 1 : null,
+    quotes: quotesData.quotes.filter(({quote}) => {
+      return quote.toLowerCase().includes(query)
+    }).slice(0, 5)
   }
-}
 
-export const getQuotes = async (
-  request: FastifyRequest<GetQuotes>,
-  reply: FastifyReply
-) => {
-  const { page, cursor } = request.query
-  if (!page && !cursor)
-    throw new Error(
-      'Missing parameters. Please provide "page" or "cursor" parameter in the request query.'
-    )
-  await sleep()
-
-  const limit = 5
-
-  if (page) return getQuotesByPage(parseInt(page), limit)
-  if (cursor) return getQuotesByCursor(parseInt(cursor), limit)
-}
-
-type CreateQuote = {
-  Body: {
-    quote: string
-    author: string
-  }
-}
-
-export const createQuote = async (request: FastifyRequest<CreateQuote>) => {
-  const { quote, author } = request.body
-  if (!quote || !author)
-    throw new Error('Please provide author and quote text.')
-  await sleep()
-  const quotesBuffer = await fs.readFile(quotesFilePath)
-  const quotesJson = JSON.parse(quotesBuffer.toString()) as QuotesData
-  const id = nanoid()
-  quotesJson.quotes.unshift({ id, quote, author })
-  await fs.writeFile(quotesFilePath, JSON.stringify(quotesJson), 'utf-8')
-  return true
-}
-
-export const resetQuotes = async (request: FastifyRequest) => {
-  await sleep()
-  await fs.writeFile(quotesFilePath, JSON.stringify(quotesOriginal), 'utf-8')
-  return true
 }
