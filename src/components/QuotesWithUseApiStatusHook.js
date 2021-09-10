@@ -5,17 +5,17 @@ import { ERROR, IDLE, PENDING, SUCCESS } from '@/api/constants/apiStatus'
 
 const Quotes = (props) => {
   const [quotes, setQuotes] = useState([])
-  const { setStatus, isPending, isIdle, isError, isSuccess } =
+  const { setApiStatus, isPending, isIdle, isError, isSuccess } =
     useApiStatus(IDLE)
 
   const initFetchQuotes = async () => {
     try {
-      setStatus(PENDING)
+      setApiStatus(PENDING)
       const quotesData = await fetchQuotes()
       setQuotes(quotesData)
-      setStatus(SUCCESS)
+      setApiStatus(SUCCESS)
     } catch (error) {
-      setStatus(ERROR)
+      setApiStatus(ERROR)
     }
   }
 

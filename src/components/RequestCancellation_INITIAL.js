@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { fetchQuotes, searchQuotes } from '@/api/quoteApi'
+import axios from 'axios'
 
 const RequestCancellation = (props) => {
   const [quotes, setQuotes] = useState([])
@@ -16,14 +17,15 @@ const RequestCancellation = (props) => {
     setQuery(q)
     try {
       searchQuotesAbortRef.current?.()
+      const {cancel, token} = axios.CancelToken.source()
+      searchQuotesAbortRef.current = cancel
+
       const response = await searchQuotes(q, {
-        abort: (abort) => {
-          searchQuotesAbortRef.current = abort
-        }
+        cancelToken: token
       })
       setQuotes(response)
     } catch (error) {
-      if (error.aborted) {
+      if (axios.isCancel(error)) {
         console.warn('REQUEST ABORTED!')
       } else {
         console.error(error)

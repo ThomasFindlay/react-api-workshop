@@ -7,8 +7,6 @@ const axiosParams = {
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:4000/api/'
       : '/api/',
-  // Alternative if you have more environments
-  // baseURL: process.env.VUE_APP_API_BASE_URL
 }
 
 // Create axios instance with default params

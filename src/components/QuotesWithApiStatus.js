@@ -8,16 +8,16 @@ const ERROR = 'ERROR'
 
 const Quotes = (props) => {
   const [quotes, setQuotes] = useState([])
-  const [status, setStatus] = useState(IDLE)
+  const [apiStatus, setApiStatus] = useState(IDLE)
 
   const initFetchQuotes = async () => {
     try {
-      setStatus(PENDING)
+      setApiStatus(PENDING)
       const quotesData = await fetchQuotes()
       setQuotes(quotesData)
-      setStatus(SUCCESS)
+      setApiStatus(SUCCESS)
     } catch (error) {
-      setStatus(ERROR)
+      setApiStatus(ERROR)
     }
   }
 
@@ -26,9 +26,9 @@ const Quotes = (props) => {
     <div className="max-w-xl mx-auto">
       <h2 className="font-semibold text-2xl mb-4">Quotes</h2>
       <div>
-        {status === PENDING ? <p>Loading quotes...</p> : null}
-        {status === ERROR ? <p>There was a problem</p> : null}
-        {status === IDLE ? (
+        {apiStatus === PENDING ? <p>Loading quotes...</p> : null}
+        {apiStatus === ERROR ? <p>There was a problem</p> : null}
+        {apiStatus === IDLE ? (
           <button
             className="px-4 py-3 bg-blue-700 text-blue-100"
             onClick={initFetchQuotes}
@@ -37,7 +37,7 @@ const Quotes = (props) => {
           </button>
         ) : null}
 
-        {status === SUCCESS
+        {apiStatus === SUCCESS
           ? quotes.map((quote) => {
               return (
                 <blockquote

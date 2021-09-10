@@ -16,12 +16,12 @@ const prepareStatuses = (currentStatus) => {
 }
 
 export const useApiStatus = (currentStatus = IDLE) => {
-  const [status, setStatus] = useState(currentStatus)
-  const statuses = useMemo(() => prepareStatuses(status), [status])
+  const [apiStatus, setApiStatus] = useState(currentStatus)
+  const statuses = useMemo(() => prepareStatuses(apiStatus), [apiStatus])
 
   return {
-    status,
-    setStatus,
+    apiStatus,
+    setApiStatus,
     ...statuses,
   }
 }

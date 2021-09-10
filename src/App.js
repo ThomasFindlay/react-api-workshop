@@ -1,6 +1,5 @@
 import './App.css'
-import Quotes from './components/QuotesWithUseApiStatusHook'
-
+import Quotes from './components/RequestCancellation'
 function App() {
   return (
     <div className="App">

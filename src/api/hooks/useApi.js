@@ -9,21 +9,21 @@ export function useApi(
   const { initialData } = config
   const [data, setData] = useState(initialData)
   const [error, setError] = useState()
-  const { status, setStatus, ...normalisedStatuses } = useApiStatus()
+  const { apiStatus, setApiStatus, ...normalisedStatuses } = useApiStatus()
 
   const exec = async (...args) => {
     try {
-      setStatus(PENDING)
+      setApiStatus(PENDING)
       const data = await fn(...args)
       setData(data)
-      setStatus(SUCCESS)
+      setApiStatus(SUCCESS)
       return {
         data,
         error: null,
       }
     } catch (error) {
       setError(error)
-      setStatus(ERROR)
+      setApiStatus(ERROR)
       return {
         error,
         data: null,
@@ -34,8 +34,8 @@ export function useApi(
   return {
     data,
     setData,
-    status,
-    setStatus,
+    apiStatus,
+    setApiStatus,
     error,
     exec,
     ...normalisedStatuses,
