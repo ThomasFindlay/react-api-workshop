@@ -1,5 +1,5 @@
 const { spawnSync, spawn } = require('child_process')
-const path = require('path/posix')
+const path = require('path')
 
 const styles = {
   success: { open: '\u001b[32;1m', close: '\u001b[0m' },
