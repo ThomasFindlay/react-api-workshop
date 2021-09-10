@@ -6,6 +6,7 @@ function App() {
       <header className="App-header">
         <h1>React API Workshop</h1>
       </header>
+      <main className="container mx-auto mt-8"></main>
     </div>
   )
 }
