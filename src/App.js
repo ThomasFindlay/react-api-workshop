@@ -1,4 +1,5 @@
 import './App.css'
+import Quotes from './components/QuotesWithUseApiStatusHook'
 
 function App() {
   return (
@@ -6,7 +7,9 @@ function App() {
       <header className="App-header">
         <h1>React API Workshop</h1>
       </header>
-      <main className="container mx-auto mt-8"></main>
+      <main className="container mx-auto mt-8">
+        <Quotes />
+      </main>
     </div>
   )
 }
